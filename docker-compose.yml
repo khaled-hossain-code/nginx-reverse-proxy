@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  # Node.js Express server
+  nodejs-express1:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    ports:
+      - "6000:6000"
+    environment:
+      NODE_ENV: production
+
+  # Nginx service as a reverse proxy
+  ng1:
+    image: nginx:latest
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "80:80"
+    depends_on:
+      - nodejs-express1
